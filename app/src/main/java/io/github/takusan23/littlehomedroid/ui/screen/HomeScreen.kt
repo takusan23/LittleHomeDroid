@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import io.github.takusan23.littlehomedroid.BanditMachine
-import io.github.takusan23.littlehomedroid.usage.UsageStatsTool
 import io.github.takusan23.littlehomedroid.usage.UsageStatusData
+import io.github.takusan23.littlehomedroid.usage.UsageStatusTool
 
 /** 最初の画面 */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,7 +31,7 @@ fun HomeScreen() {
 
     LaunchedEffect(key1 = Unit) {
         // usageDataList.value = UsageStatsTool.queryUsageAppDataList(context)
-        usageDataList.value = BanditMachine.playAndResultAppList(UsageStatsTool.queryUsageAppDataList(context), 10)
+        usageDataList.value = BanditMachine.playAndResultAppList(UsageStatusTool.queryUsageAppDataList(context), 10)
     }
 
     Scaffold(

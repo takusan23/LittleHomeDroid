@@ -12,7 +12,7 @@ import java.util.Calendar
 
 
 /** アプリの使用状況を取得する */
-object UsageStatsTool {
+object UsageStatusTool {
 
     /**
      * 権限が取得済みかどうか
