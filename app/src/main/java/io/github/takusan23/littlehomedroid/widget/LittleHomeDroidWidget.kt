@@ -10,6 +10,7 @@ import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
+import androidx.glance.appwidget.action.actionSendBroadcast
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.GridCells
@@ -20,13 +21,16 @@ import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import io.github.takusan23.littlehomedroid.BanditMachine
+import io.github.takusan23.littlehomedroid.R
 import io.github.takusan23.littlehomedroid.usage.UsageStatusTool
 
 /** ウィジェットのレイアウト */
@@ -42,7 +46,7 @@ class LittleHomeDroidWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
 
         val usageStatusDataList = UsageStatusTool.queryUsageAppDataList(context)
-        val banditResult = BanditMachine.playAndResultAppList(usageStatusDataList, 10)
+        val banditResult = BanditMachine.playAndResultAppList(usageStatusDataList, 15)
         val widgetDataList = LittleHomeDroidDataWidgetTool.convertWidgetData(context, banditResult)
 
         // Glance 専用の関数が必要
@@ -52,11 +56,23 @@ class LittleHomeDroidWidget : GlanceAppWidget() {
                     .background(BackgroundColor)
                     .cornerRadius(16.dp)
             ) {
-                Text(
-                    modifier = GlanceModifier.padding(5.dp),
-                    text = "LittleHomeDroid",
-                    style = TextStyle(color = ColorProvider(WidgetContent), fontSize = 18.sp)
-                )
+
+                Row(modifier = GlanceModifier.fillMaxWidth(), verticalAlignment = Alignment.Vertical.CenterVertically) {
+                    Text(
+                        modifier = GlanceModifier
+                            .defaultWeight()
+                            .padding(5.dp),
+                        text = "LittleHomeDroid",
+                        style = TextStyle(color = ColorProvider(WidgetContent), fontSize = 18.sp)
+                    )
+                    Image(
+                        modifier = GlanceModifier
+                            .padding(5.dp)
+                            .clickable(actionSendBroadcast(LittleHomeDroidWidgetReceiver.createBroadcastIntent(context, LittleHomeDroidWidgetReceiver.BroadcastEvent.UPDATE))),
+                        provider = ImageProvider(R.drawable.outline_refresh_24), contentDescription = null
+                    )
+                }
+
 
                 Box(modifier = GlanceModifier.padding(3.dp)) {
                     LazyVerticalGrid(
