@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LittleHomeDroid</string>
+    <string name="little_home_droid_widget_description">Recommend app from usage history.</string>
+</resources>
